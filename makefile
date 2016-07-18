@@ -15,6 +15,9 @@ upload: Reflow.hex
 main.o: main.c
 	$(CC) $(CFLAGS) main.c -o main.o
 
+clock.o: System/clock.c
+	$(CC) $(CFLAGS) clock.c -o clock.o
+
 clean:
 	rm *.elf
 	rm *.o
