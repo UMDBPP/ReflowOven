@@ -5,8 +5,8 @@ OPTLEVEL=-Os
 CFLAGS=-c -I. $(OPTLEVEL) -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wextra -DF_CPU=16000000 -mmcu=atmega328p
 LFLAGS=-I. $(OPTLEVEL) -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -Wall -Wextra -DF_CPU=16000000 -mmcu=atmega328p
 
-all: main.o
-	$(CC) $(LFLAGS) -Wl,-Map=TestCode.map,--cref main.o -o Reflow.elf
+all: main.o clock.o
+	$(CC) $(LFLAGS) -Wl,-Map=Reflow.map,--cref main.o clock.o -o Reflow.elf
 	$(OBJCOPY) -O ihex -R .eeprom Reflow.elf Reflow.hex
 
 upload: Reflow.hex
@@ -16,7 +16,7 @@ main.o: main.c
 	$(CC) $(CFLAGS) main.c -o main.o
 
 clock.o: System/clock.c
-	$(CC) $(CFLAGS) clock.c -o clock.o
+	$(CC) $(CFLAGS) System/clock.c -o clock.o
 
 clean:
 	rm *.elf
