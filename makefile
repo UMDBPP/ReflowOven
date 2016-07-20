@@ -19,8 +19,8 @@ clock.o: System/clock.c
 	$(CC) $(CFLAGS) System/clock.c -o clock.o
 
 clean:
-	rm *.elf
 	rm *.o
+	rm *.elf
 
 purge: clean
 	rm *.hex
