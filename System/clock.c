@@ -45,3 +45,12 @@ void clock_delay(uint32_t _delayTime) {
 
 	while(clock_get_ms() <= delayUntil) { } // do nothing until specified time.
 }
+
+void clock_reset() {
+	uint8_t oldSREG = SREG;
+	
+	cli();
+	_ms = 0;
+	SREG = oldSREG;
+}
+
