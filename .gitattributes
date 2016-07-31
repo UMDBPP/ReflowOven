@@ -1,0 +1,8 @@
+# Auto detect text files and perform LF normalization
+* text=lf
+
+# Classify text files
+*.c text
+*.cpp text
+*.h text
+.md text
