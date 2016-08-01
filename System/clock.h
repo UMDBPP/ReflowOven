@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#include "config.h"
+
 void clock_init(); // Should be called at start of main() (or in some global init function)
 
 /* Usable userspace functions */

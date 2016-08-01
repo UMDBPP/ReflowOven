@@ -3,6 +3,7 @@
 
 #include <avr/io.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include "util.h"
 
 void spi_init(void);
