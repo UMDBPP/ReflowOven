@@ -27,7 +27,7 @@ int uart_putchar_printf(char var, FILE *stream) {
 *****************************************************************************/
 void uart_init(unsigned long baud){
 	
-	stdout = &yart_stdout; //make stdout print to USART0
+	stdout = &uart_stdout; //make stdout print to USART0
 	
 	//Compute UBRR for baudrate setting
 	unsigned short ubrr=(unsigned short)((F_CPU/(baud*16UL))-1);

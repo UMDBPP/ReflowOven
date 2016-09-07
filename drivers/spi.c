@@ -10,7 +10,6 @@ static void init(void);
 
 void spi_init()
 {
-	pinMode(SS, OUTPUT);
 	pinMode(MOSI, OUTPUT);
 	pinMode(SCK, OUTPUT);
 	pinPullup(MISO, PULLUP_ENABLE);
@@ -36,18 +35,4 @@ void spi_enable()
 void spi_disable()
 {
 	power_spi_disable();
-}
-
-static inline bool chip_select()
-{
-	spi_enable();
-	spiSelect();
-	return true;
-}
-
-static inline bool chip_deselect(void)
-{
-	spiDeselect();
-	spi_disable();
-	return false;
 }
