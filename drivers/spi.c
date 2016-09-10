@@ -8,31 +8,40 @@
 
 static void init(void);
 
-void spi_init()
-{
+/*************************************************************************//**
+  @brief Initializes the SPI hardware
+  SPI starts out disabled
+*****************************************************************************/
+void spi_init(){
 	pinMode(MOSI, OUTPUT);
 	pinMode(SCK, OUTPUT);
+	pinMode(MISO, INPUT);
 	pinPullup(MISO, PULLUP_ENABLE);
-	//pinWrite(SS, HIGH);
 
 	init();
 	
 	spi_disable();
 }
 
-static void init()
-{
+/*************************************************************************//**
+  @brief Sets some SPI hardware settings stuff
+*****************************************************************************/
+static void init(){
 	SPCR = _BV(SPE)|_BV(MSTR);
 	SPSR = _BV(SPI2X);
 }
 
-void spi_enable()
-{
+/*************************************************************************//**
+  @brief Powers on SPI hardware
+*****************************************************************************/
+void spi_enable(){
 	power_spi_enable();
 	init(); // Datasheet says to reinitialize after waking up
 }
 
-void spi_disable()
-{
+/*************************************************************************//**
+  @brief Powers off SPI hardware
+*****************************************************************************/
+void spi_disable(){
 	power_spi_disable();
 }
