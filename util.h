@@ -1,20 +1,20 @@
-#ifndef UTIL_H_
-#define UTIL_H_
+#ifndef __UTIL_H__
+#define __UTIL_H__
 
 #define noinline __attribute__ ((__noinline__))
 
 #define delay(ms) _delay_ms(ms)
 #define delay_us(us) _delay_us(us)
 
-// Quick and easy macro for a for loop
+/* Quick and easy macro for a for loop */
 #define LOOP(count, var) for(byte var=0;var<count;var++)
 
-// Reverse loop sometimes produces smaller/faster code
+/* Reverse loop sometimes produces smaller/faster code */
 #define LOOPR(count, var) for(byte var=count;var--;)
 
-#define CONCAT(a, b) a ## b //Makes the preprocessor hacking a little clearer
+#define CONCAT(a, b) a ## b /* Makes the preprocessor hacking a little clearer */
 
-//Because laziness
+/* Because laziness */
 #define B0	B, 0
 #define B1	B, 1
 #define B2	B, 2
@@ -40,7 +40,7 @@
 #define D6	D, 6
 #define D7	D, 7
 
-//Stare for a bit, they'll become clear
+/* Stare for a bit, they'll become clear */
 #define bit_set_concat(reg, reg2, bit)		(CONCAT(reg, reg2) |= _BV(bit))
 #define bit_clr_concat(reg, reg2, bit)		(CONCAT(reg, reg2) &= ~_BV(bit))
 #define bit_tog_concat(reg, reg2, bit)		(CONCAT(reg, reg2) ^= _BV(bit))
@@ -63,10 +63,10 @@
 #define PINLOW			false
 #define pinRead(x)		bit_is_set_concat(PIN, x)
 
-//The laziest of all these macros
+/* The laziest of all these macros */
 #define bits_set(data, bits)	((data) |= (bits))
 #define bits_clr(data, bits)	((data) &= (~(bits)))
 #define bit_set(data, x)		bits_set((data), _BV(x))
 #define bit_clr(data, x)		bits_clr((data), _BV(x))
 
-#endif //UTIL_H_
+#endif /* __UTIL_H__ */

@@ -36,7 +36,7 @@ static void init(){
 *****************************************************************************/
 void spi_enable(){
 	power_spi_enable();
-	init(); // Datasheet says to reinitialize after waking up
+	init(); /* Datasheet says to reinitialize after waking up */
 }
 
 /*************************************************************************//**

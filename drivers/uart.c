@@ -26,13 +26,12 @@ int uart_putchar_printf(char var, FILE *stream) {
   @param[in] desired baud rate (configuration values computed using F_CPU)
 *****************************************************************************/
 void uart_init(unsigned long baud){
-	
-	stdout = &uart_stdout; //make stdout print to USART0
-	
-	//Compute UBRR for baudrate setting
+	/* Compute UBRR for baudrate setting */
 	unsigned short ubrr=(unsigned short)((F_CPU/(baud*16UL))-1);
+
+	stdout = &uart_stdout; /* make stdout print to USART0 */
 	
-	//Set BAUD rate.
+	/* Set BAUD rate. */
 	UBRR0H = (unsigned char) (ubrr >> 8);
 	UBRR0L = (unsigned char) ubrr;
 	
@@ -43,9 +42,9 @@ void uart_init(unsigned long baud){
 	See datasheet pg. 390.*/
 	UCSR0C = (1 << UCSZ00) | (1 << UCSZ01);
 	
-	//Enable receiver and transmitter. Enable the USART Receive Complete interrupt(RXCIE).
-	//UCSR0B = (1 << RXEN0) | (1 << TXEN0) | (1 << RXCIE0));
-	UCSR0B = (1 << RXEN0) | (1 << TXEN0);//Enable RX/TX, no interrupts
+	/*Enable receiver and transmitter. Enable the USART Receive Complete interrupt(RXCIE). */
+	/*UCSR0B = (1 << RXEN0) | (1 << TXEN0) | (1 << RXCIE0)); */
+	UCSR0B = (1 << RXEN0) | (1 << TXEN0);/* Enable RX/TX, no interrupts */
 }
 
 /*************************************************************************//**
@@ -54,8 +53,8 @@ Transmits a byte
   @param[in] data byte to be transmitted
 *****************************************************************************/
 void uart_transmit(unsigned char data){
-	while(!(UCSR0A & (1 << UDRE0))); //Wait for the empty transmit buffer. (Waiting UDR0 to be empty.)
-		UDR0 = data;			//store the data in the USART Data Register
+	while(!(UCSR0A & (1 << UDRE0))); /* Wait for the empty transmit buffer. (Waiting UDR0 to be empty.) */
+		UDR0 = data;			/* store the data in the USART Data Register */
 }
 
 /*************************************************************************//**
@@ -63,8 +62,8 @@ void uart_transmit(unsigned char data){
   @return the received byte
 *****************************************************************************/
 unsigned char uart_receive(void){
-	while (!(UCSR0A & (1 << RXC0))); //Do nothing until data have been received and is ready to be read from USART Data Register
-	return UDR0;	//when data is ready to be received, return the content stored in the USART Data Register(UDR0.)
+	while (!(UCSR0A & (1 << RXC0))); /* Do nothing until data have been received and is ready to be read from USART Data Register */
+	return UDR0;	/* when data is ready to be received, return the content stored in the USART Data Register(UDR0.) */
 }
 
 /*************************************************************************//**

@@ -2,8 +2,8 @@ CC=avr-gcc
 OBJCOPY=avr-objcopy
 PROGRAMMER=atmelice_isp
 OPTLEVEL=-Os
-CFLAGS=-c -I. $(OPTLEVEL) -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wextra -mmcu=atmega328p
-LFLAGS=-I. $(OPTLEVEL) -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -Wall -Wextra -mmcu=atmega328p
+CFLAGS=-c -I. $(OPTLEVEL) -ansi -pedantic-errors -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Wall -Wextra -Wshadow -mmcu=atmega328p #-Werror
+LFLAGS=-I. $(OPTLEVEL) -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ansi -pedantic-errors -Wall -Wextra -Werror -mmcu=atmega328p #-Werror
 
 all: main.o clock.o spi.o uart.o
 	$(CC) $(LFLAGS) -Wl,-Map=Reflow.map,--cref main.o clock.o spi.o uart.o -o Reflow.elf
@@ -25,6 +25,7 @@ uart.o: drivers/uart.c
 	$(CC) $(CFLAGS) drivers/uart.c -o uart.o
 
 clean:
+	set -e
 	rm *.o
 	rm *.elf
 

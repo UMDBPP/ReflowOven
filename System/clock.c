@@ -2,55 +2,43 @@
 
 #include <avr/interrupt.h>
 
-// Internal variables not meant for outside access:
-const uint32_t _usPerTimerOverflow = (64 * 256)/(F_CPU/1000000L);
-volatile uint32_t _ms;
-volatile uint8_t _msFrac;
-
-// ISR on TC0 overflow:
-ISR(TIMER0_OVF_vect) {
-	uint32_t localMs = _ms;
-	uint8_t localMsFrac = _msFrac;
-
-	// Miros to millis; Note that these calcs are const, so precomputed by compiler.
-	localMs += (_usPerTimerOverflow/1000);
-	localMsFrac += ((_usPerTimerOverflow % 1000) >> 3);
-	if(localMsFrac > 125) { // 125 = 1000 >> 3
-		localMsFrac -= 125;
-		localMs += 1;
-	}
-
-	_msFrac = localMsFrac;
-	_ms = localMs;
-}
+/* Internal variables not meant for outside access: */
+static volatile uint32_t _ms;
 
 void clock_init() {
-	TCCR0B |= ((1 << CS01) | (1 << CS00)); // Prescalar: 64
-	TIMSK0 |= (1 << TOIE0); // Interrupt enable
+	TCNT0 = 0;
+	TCCR0A |= (1 << WGM01); /* CTC mode */
+	TCCR0B |= (1 << CS01) | (1 << CS00); /* Prescalar: 64 */
+	OCR0A = 250; /* 0.001s * 16MHz / 64 */
+	TIMSK0 |= (1 << OCIE0A); /* Interrupt enable */
 }
 
 uint32_t clock_get_ms() {
-	uint32_t localMs;
-	uint8_t oldSREG = SREG;
+	uint32_t local_ms;
+	uint8_t old_SREG = SREG;
 
 	cli();
-	localMs = _ms;
-	SREG = oldSREG;
+	local_ms = _ms;
+	SREG = old_SREG;
 
-	return localMs;
+	return local_ms;
 }
 
-void clock_delay(uint32_t _delayTime) {
-	uint32_t delayUntil = clock_get_ms() + _delayTime;
-
-	while(clock_get_ms() <= delayUntil) { } // do nothing until specified time.
+void clock_delay(uint32_t _delay_time) {
+	uint32_t delay_until = _ms + _delay_time;
+	while (_ms <= delay_until); /* do nothing until specified time. */
 }
 
 void clock_reset() {
-	uint8_t oldSREG = SREG;
-	
+	uint8_t old_SREG = SREG;
 	cli();
+	
 	_ms = 0;
-	SREG = oldSREG;
+
+	SREG = old_SREG;
 }
 
+/* ISR on TC0 overflow: */
+ISR(TIMER0_COMPA_vect) {
+	_ms++;
+}

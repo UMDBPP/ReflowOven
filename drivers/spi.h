@@ -1,5 +1,5 @@
-#ifndef SPI_H_
-#define SPI_H_
+#ifndef __SPI_H__
+#define __SPI_H__
 
 #include <avr/io.h>
 #include <stdint.h>
@@ -10,22 +10,22 @@ void spi_init(void);
 void spi_enable(void);
 void spi_disable(void);
 
-inline uint8_t spi_transfer(uint8_t data){
-	loop_until_bit_is_set(SPSR, SPIF); //Wait for existing transfer to finish
+__inline__ uint8_t spi_transfer(uint8_t data){
+	loop_until_bit_is_set(SPSR, SPIF); /* Wait for existing transfer to finish */
 	SPDR = data;
 	loop_until_bit_is_set(SPSR, SPIF);
 	return SPDR;
 }
 
-inline void spi_transfer_nr(uint8_t data){
-	loop_until_bit_is_set(SPSR, SPIF); //Wait for existing transfer to finish
+__inline__ void spi_transfer_nr(uint8_t data){
+	loop_until_bit_is_set(SPSR, SPIF); /* Wait for existing transfer to finish */
 	SPDR = data;
 	loop_until_bit_is_set(SPSR, SPIF);
 }
 
-inline void spit_transfer_noblock(uint8_t data){
-	loop_until_bit_is_set(SPSR, SPIF); //Wait for existing transfer to finish
+__inline__ void spit_transfer_noblock(uint8_t data){
+	loop_until_bit_is_set(SPSR, SPIF); /* Wait for existing transfer to finish */
 	SPDR = data;
 }
 
-#endif //SPI_H_
+#endif /* __SPI_H__ */

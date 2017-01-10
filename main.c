@@ -8,15 +8,15 @@ void init();
 int main(void) {
 	init();
 
-	for(;;) {
-		// Do something
+	while(1) {
+		/* Do something */
 	}
 
-	return 0; // Never reach
+	return 0; /* Never reach */
 }
 
 void init() {
-	sei(); // Interrupts on initially
+	sei(); /* enable interrupts */
 
 	clock_init();
 }
