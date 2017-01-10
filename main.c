@@ -9,7 +9,7 @@ int main(void) {
 	init();
 
 	while(1) {
-		/* Do something */ //test
+		/* Do something */
 	}
 
 	return 0; /* Never reach */
